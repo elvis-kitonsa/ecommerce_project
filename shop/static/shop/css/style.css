@@ -1,0 +1,7 @@
+.card {
+            transition: transform 0.2s ease-in-out, shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px); /* Makes the card "pop" up slightly when you point at it */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+    }

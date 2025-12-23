@@ -125,3 +125,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# This tells Django to look for static folders in your apps
+STATICFILES_DIRS = [
+    BASE_DIR / "static", # If you have a global static folder
+]

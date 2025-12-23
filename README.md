@@ -34,4 +34,4 @@ A sleek, responsive e-commerce storefront specializing in high-end gadgets. Buil
     - Start the server: `python manage.py runserver`
 
 ## 📸 Preview
-![Tech Store Preview](preview.png)
+![Tech Store Preview](media/preview.png)

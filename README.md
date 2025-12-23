@@ -4,6 +4,13 @@
 # 📝 Project Description
 A sleek, responsive e-commerce storefront specializing in high-end gadgets. Built with Django and powered by MariaDB, this project demonstrates a full-stack integration from a custom database to a Bootstrap-themed frontend.
 
+## 🤖 Development Process
+This project was built using an **AI-augmented workflow**. 
+I utilized **Google Gemini** as a thought partner to:
+* Architect the Django static file routing.
+* Refactor inline scripts into modular JavaScript.
+* Debug real-time search logic and MariaDB integration.
+
 ## ✨ Features
 * **Dynamic Product Grid:** Automatically renders tech items from the MariaDB database.
 * **Polished UI:** Custom Bootstrap cards with hover effects and uniform image scaling.

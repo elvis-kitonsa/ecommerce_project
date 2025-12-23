@@ -41,4 +41,4 @@ I utilized **Google Gemini** as a thought partner to:
     - Start the server: `python manage.py runserver`
 
 ## 📸 Preview
-![Tech Store Preview](media/preview.png)
+![Tech Store Preview](media/dashboard-preview.png)

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Tech Store</title>
+
+    <style>
+        .card {
+            transition: transform 0.2s ease-in-out, shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px); /* Makes the card "pop" up slightly when you point at it */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+    }
+    </style>
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-dark bg-dark mb-4 shadow">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">PREMIUM TECH STORE</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            {% for product in products %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <img src="{{ product.image_url }}" class="card-img-top" alt="{{ product.name }}" 
+                         style="height: 220px; object-fit: cover;">
+                    
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title h6 fw-bold mb-0">{{ product.name }}</h5>
+                            <span class="badge bg-success rounded-pill">${{ product.price }}</span>
+                        </div>
+                        
+                        <p class="text-muted small mb-2">{{ product.category }}</p>
+                        
+                        <p class="card-text text-secondary small mb-4">
+                            {{ product.description|truncatewords:12 }}
+                        </p>
+
+                        <div class="mt-auto">
+                            <button class="btn btn-primary w-100 rounded-pill shadow-sm">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

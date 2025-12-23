@@ -1,7 +1,7 @@
-## Project Concept 
-Premium Tech Store 
+# 💡 Project Concept
+**Premium Tech Store**
 
-## Project Description: 
+# 📝 Project Description
 A sleek, responsive e-commerce storefront specializing in high-end gadgets. Built with Django and powered by MariaDB, this project demonstrates a full-stack integration from a custom database to a Bootstrap-themed frontend.
 
 ## ✨ Features

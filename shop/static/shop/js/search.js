@@ -5,6 +5,9 @@ const cartButtons = document.querySelectorAll('.cart-btn'); // Select all cart b
 
 console.log("Buttons found:", cartButtons.length);
 
+let cart = []; // This will hold our product objects that are added to the cart
+const cartCountBadge = document.getElementById('cart-count');
+
 // Function to handle adding to cart (placeholder functionality)
 
 searchInput.addEventListener('input', function() {
@@ -35,20 +38,31 @@ searchInput.addEventListener('input', function() {
 // Tell each button to wait for a click
 cartButtons.forEach(button => {
     button.addEventListener('click', () => {
+
         const card = button.closest('.card-body');
         const productName = card.querySelector('.card-title').textContent;
 
-        // 1. Temporary feedback - to confirm item addition
+        // Grab the price and remove the '$' sign so we can do math later
+        const productPrice = card.querySelector('.badge').textContent.replace('$', '');
+
+        // 1. Create a "Product Object" and add it to our cart list
+        const item = { name: productName, price: parseFloat(productPrice) };
+        cart.push(item);
+
+        // 2. Update the red badge number on the floating cart icon
+        cartCountBadge.textContent = cart.length;
+
+        // --- Your existing 1.5s timer logic ---
         const originalText = button.textContent;
-        button.textContent = "Added ✓";
+        button.textContent = "Added! ✓";
         button.classList.replace('btn-primary', 'btn-success');
 
-        // 2. Reset the button after 1.5 seconds
         setTimeout(() => {
             button.textContent = originalText;
             button.classList.replace('btn-success', 'btn-primary');
         }, 1500);
 
-        console.log(`Added ${productName} to the temporary list`);
+        // check the progress in your console
+        console.log("Current Cart:", cart);
     });
 });

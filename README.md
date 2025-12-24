@@ -40,13 +40,11 @@ I utilized **Google Gemini** as a thought partner to:
     - Build tables: `python manage.py migrate`
     - Start the server: `python manage.py runserver`
 
-## 📸 Preview
-![Tech Store Preview](media/dashboard-preview.png)
-
 ## 📂 Project Structure
 
 Here is the project outline of the entire system:
 
+```text
 ecommerce_project/
 ├── core/                  # Project-wide settings and routing
 │   ├── settings.py        # Database (MariaDB) & app configurations
@@ -63,3 +61,7 @@ ecommerce_project/
 ├── media/                 # Uploaded product images
 ├── manage.py              # Django command-line utility
 └── db.sqlite3 / MariaDB   # Project database
+
+## 📸 Preview
+![Tech Store Preview](media/dashboard-preview.png)
+

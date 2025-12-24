@@ -61,6 +61,7 @@ ecommerce_project/
 ├── media/                 # Uploaded product images
 ├── manage.py              # Django command-line utility
 └── db.sqlite3 / MariaDB   # Project database
+```
 
 ## 📸 Preview
 ![Tech Store Preview](media/dashboard-preview.png)

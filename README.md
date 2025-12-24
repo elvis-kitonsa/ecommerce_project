@@ -42,3 +42,24 @@ I utilized **Google Gemini** as a thought partner to:
 
 ## 📸 Preview
 ![Tech Store Preview](media/dashboard-preview.png)
+
+## 📂 Project Structure
+
+Here is the project outline of the entire system:
+
+ecommerce_project/
+├── core/                  # Project-wide settings and routing
+│   ├── settings.py        # Database (MariaDB) & app configurations
+│   └── urls.py            # Main URL dispatcher
+├── shop/                  # Main store application logic
+│   ├── migrations/        # Database schema history
+│   ├── static/shop/       # Frontend assets
+│   │   ├── css/           # Custom styling (style.css)
+│   │   └── js/            # Interactivity (search.js)
+│   ├── templates/shop/    # HTML pages (product_list.html)
+│   ├── models.py          # Database structure for Products
+│   ├── views.py           # Logic for displaying products
+│   └── urls.py            # App-specific URL routes
+├── media/                 # Uploaded product images
+├── manage.py              # Django command-line utility
+└── db.sqlite3 / MariaDB   # Project database

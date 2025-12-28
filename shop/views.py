@@ -15,3 +15,7 @@ def product_list(request):
         products = Product.objects.all()
         
     return render(request, 'shop/product_list.html', {'products': products, 'query': query})
+
+# View for the shopping cart. This is a placeholder for now. You can expand it later.
+def cart_view(request):
+    return render(request, 'shop/cart.html')

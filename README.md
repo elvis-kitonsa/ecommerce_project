@@ -1,46 +1,47 @@
-💡 Project Concept
+# 💡 Project Concept
+**KITONSA'S TECH STORE**
 
-KITONSA'S TECH STORE
-📝 Project Description
+# 📝 Project Description
 
-A sleek, responsive e-commerce storefront specializing in high-end gadgets. Built with Django and powered by MariaDB, this project demonstrates a full-stack integration from a custom database to a highly interactive, "app-like" frontend experience.
-🤖 Development Process
+A sleek, responsive e-commerce storefront specializing in high-end gadgets. Built with **Django** and **powered by MariaDB**, this project demonstrates a **full-stack integration** from a custom database to a highly interactive, "app-like" frontend experience.
 
-This project was built using an AI-augmented workflow. I utilized Google Gemini as a technical thought partner to:
+# 🤖 Development Process
 
-    Architect the Django static file routing and MariaDB integration.
+This project was built using an AI-augmented workflow. I **utilized Google Gemini** as a **technical thought partner** to:
 
-    Refactor procedural scripts into modular, Vanilla JavaScript.
+    1. Architect the Django static file routing and MariaDB integration.
 
-    Implement LocalStorage state management for the shopping cart.
+    2. Refactor procedural scripts into modular, Vanilla JavaScript.
 
-✨ Features
+    3. Implement LocalStorage state management for the shopping cart.
 
-    Dynamic Product Grid: Automatically renders tech items from the MariaDB database.
+# ✨ Features
 
-    Smart Live Search: Instant, client-side filtering that searches titles and descriptions as you type.
+    1. Dynamic Product Grid: Automatically renders tech items from the MariaDB database.
 
-    Persistent Shopping Cart: Items stay in your cart even if you refresh or close the browser, thanks to the LocalStorage API.
+    2. Smart Live Search: Instant, client-side filtering that searches titles and descriptions as you type.
 
-    Advanced Cart Management: Includes quantity toggles, "Clear Cart" functionality, and automated total price calculation.
+    3. Persistent Shopping Cart: Items stay in your cart even if you refresh or close the browser, thanks to the LocalStorage API.
 
-    Order Success Workflow: A professional checkout simulation using a Bootstrap 5 Modal for order confirmation.
+    4. Advanced Cart Management: Includes quantity toggles, "Clear Cart" functionality, and automated total price calculation.
 
-    Polished UI: Custom hover effects, uniform image scaling, and a floating cart indicator with real-time badges.
+    5. Order Success Workflow: A professional checkout simulation using a Bootstrap 5 Modal for order confirmation.
 
-🛠️ Tech Stack
+    6. Polished UI: Custom hover effects, uniform image scaling, and a floating cart indicator with real-time badges.
 
-    Backend: Python / Django 4.2
+# 🛠️ Tech Stack
 
-    Database: MariaDB (via XAMPP)
+    1. Backend: Python / Django 4.2
 
-    Frontend: JavaScript (ES6+), Bootstrap 5, FontAwesome, HTML5/CSS3
+    2. Database: MariaDB (via XAMPP)
 
-    Database Connector: PyMySQL
+    3. Frontend: JavaScript (ES6+), Bootstrap 5, FontAwesome, HTML5/CSS3
 
-📂 Project Structure
-Plaintext
+    4. Database Connector: PyMySQL
 
+# 📂 Project Structure
+Here is the updated project structure
+```
 ecommerce_project/
 ├── core/                  # Project-wide settings and routing
 ├── shop/                  # Main store application logic
@@ -54,31 +55,30 @@ ecommerce_project/
 │   └── views.py           # Controllers for Store & Cart
 ├── media/                 # Uploaded product images
 └── manage.py              # Django command-line utility
+```
 
-⚙️ Installation & Setup
+# ⚙️ Installation & Setup
 
 Clone the Repository:
-Bash
-
+```
 git clone https://github.com/elvis-kitonsa/ecommerce_project.git
 cd ecommerce_project
-
+```
 Environment Setup:
-Bash
-
+```
 pip install -r requirements.txt
-
+```
 Database Configuration:
 
     Ensure XAMPP (MySQL/MariaDB) is running and create a database named tech_store_db.
-
     Update core/settings.py with your credentials.
 
 Initialize & Run:
-Bash
 
     python manage.py migrate
     python manage.py runserver
 
-📸 Preview
+# 📸 Preview
+This is how the Tech shop's dashboard looks like:
+
 ![Tech Store Preview](media/preview.png)

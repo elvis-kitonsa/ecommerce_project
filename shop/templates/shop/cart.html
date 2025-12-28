@@ -1,3 +1,7 @@
+<!-- This is the shopping cart page for our e-commerce website -->
+<!-- It displays the items in the user's cart and allows checkout. -->
+<!-- It is the 2nd major page of the site after the product listing page. -->
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -8,6 +12,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/all.min.css">
     <style>
+        /* Custom styles for the cart page */
         .qty-control { 
             background: #eeeeee; 
             border-radius: 50px; 
@@ -41,12 +46,14 @@
 
 <nav class="navbar navbar-dark bg-dark mb-4 shadow">
     <div class="container">
+        <!-- Store Name Display in Navbar -->
         <span class="navbar-brand mb-0 h1 fw-bold">KITONSA'S TECH STORE</span>
     </div>
 </nav>
 
 <div class="container mt-5" style="max-width: 900px;">
     <div class="mb-4">
+        <!-- Back to Dashboard Link -->
         <a href="{% url 'product_list' %}" class="text-decoration-none text-dark fw-bold d-inline-flex align-items-center" style="opacity: 0.9; font-size: 1.05rem;">
             <span style="font-size: 1.4rem; margin-right: 8px; line-height: 1; display: inline-block; transform: translateY(-1px);">←</span> 
             Back to Dashboard
@@ -54,6 +61,7 @@
     </div>
 
     <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+        <!-- Cart Title and Clear Cart Button -->
         <h2 class="mb-0 fw-bold"><i class="fas fa-shopping-basket text-primary me-2"></i> Your Cart</h2>
         <button id="clear-cart-btn" class="btn btn-outline-danger btn-sm border-0" title="Empty Cart">
             <i class="fas fa-trash-alt fa-lg"></i>
@@ -63,6 +71,7 @@
     <div class="row g-4 align-items-start">
         <div class="col-lg-8">
             <div id="cart-page-items">
+                <!-- Cart items will be dynamically inserted here by JavaScript -->
                 <p class="text-muted">Loading your items...</p>
             </div>
         </div>
@@ -70,6 +79,8 @@
         <div class="col-lg-4">
             <div class="card shadow border-0 rounded-4">
                 <div class="card-body p-4">
+                    <!-- Order Summary Section -->
+                     <!-- Displays total items and total price, with a checkout button -->
                     <h5 class="card-title fw-bold mb-4">Order Summary</h5>
                     <div class="d-flex justify-content-between mb-2">
                         <span>Total Items:</span>
@@ -88,6 +99,9 @@
     </div>
 </div>
 
+<!-- Order Success Modal -->
+<!-- Modal displayed upon successful order completion -->
+<!-- Provides the order and  a button to return to the store --> 
 <div class="modal fade" id="orderSuccessModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 rounded-4 shadow-lg">
@@ -119,40 +133,46 @@
     </div>
 </div>
 
+<!-- Bootstrap JS and dependencies -->
+<!-- JavaScript to handle cart display and checkout logic -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- Cart Functionality Script -->
+ <!-- Manages cart display, quantity updates, clearing cart, and checkout process -->
 <script>
-function displayCartPage() {
-    const pageContainer = document.getElementById('cart-page-items');
-    const pageTotal = document.getElementById('cart-page-total');
-    const pageCount = document.getElementById('cart-page-count');
-    if (!pageContainer) return;
+function displayCartPage() { // Displays cart items on the cart page
+    const pageContainer = document.getElementById('cart-page-items'); // Container for cart items
+    const pageTotal = document.getElementById('cart-page-total'); // Element to display total price
+    const pageCount = document.getElementById('cart-page-count'); // Element to display item count
+    if (!pageContainer) return; // Exit if not on cart page
 
-    const cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
-    pageContainer.innerHTML = '';
+    const cart = JSON.parse(localStorage.getItem('shoppingCart')) || []; // Retrieve cart from LocalStorage
+    pageContainer.innerHTML = ''; // Clear existing content
 
-    if (cart.length === 0) {
+    if (cart.length === 0) { // If cart is empty
         pageContainer.innerHTML = '<div class="text-center py-5"><p class="text-muted h5">Your cart is empty</p></div>';
-        if(pageTotal) pageTotal.textContent = "$0.00";
-        if(pageCount) pageCount.textContent = "0";
+        if(pageTotal) pageTotal.textContent = "$0.00"; // Set total to $0.00
+        if(pageCount) pageCount.textContent = "0"; // Set item count to 0
         return;
     }
 
-    const groupedCart = cart.reduce((acc, item) => {
-        if (!acc[item.name]) acc[item.name] = { ...item, qty: 0 };
-        acc[item.name].qty += 1;
+    const groupedCart = cart.reduce((acc, item) => { // Group items by name and count quantities
+        if (!acc[item.name]) acc[item.name] = { ...item, qty: 0 }; // Initialize item entry
+        acc[item.name].qty += 1; // Increment quantity
         return acc;
     }, {});
 
     let grandTotal = 0;
 
-    Object.values(groupedCart).forEach(item => {
-        grandTotal += (item.price * item.qty);
+    Object.values(groupedCart).forEach(item => { // Display each unique item with quantity controls
+        grandTotal += (item.price * item.qty); // Calculate total price
         
+        /* Quantity Control Buttons */
         const minusIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>`;
         const trashIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
         const plusIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>`;
 
+        // Append item HTML to the cart page container
         pageContainer.innerHTML += `
             <div class="cart-item d-flex justify-content-between align-items-center mb-3 p-4 bg-white rounded-4 shadow-sm border-0">
                 <div>
@@ -172,23 +192,27 @@ function displayCartPage() {
             </div>`;
     });
 
+    // Update total price and item count on the page
     if(pageTotal) pageTotal.textContent = "$" + grandTotal.toFixed(2);
     if(pageCount) pageCount.textContent = cart.length;
 }
 
-window.updateQty = function(productName, change) {
-    let cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
+// Update item quantity in cart
+window.updateQty = function(productName, change) { // change: +1 to add, -1 to remove
+    let cart = JSON.parse(localStorage.getItem('shoppingCart')) || []; // Retrieve cart from LocalStorage
     if (change === 1) {
-        const product = cart.find(i => i.name === productName);
+        const product = cart.find(i => i.name === productName); // Find product to add
         cart.push({...product});
     } else {
         const index = cart.findLastIndex(i => i.name === productName);
         if (index > -1) cart.splice(index, 1);
     }
-    localStorage.setItem('shoppingCart', JSON.stringify(cart));
-    displayCartPage();
+    localStorage.setItem('shoppingCart', JSON.stringify(cart)); // Save updated cart
+    displayCartPage(); // Refresh cart display
 };
 
+// Clear entire cart
+// Handles clearing the cart when "Empty Cart" button is clicked
 document.getElementById('clear-cart-btn')?.addEventListener('click', () => {
     if(confirm("Are you sure you want to empty your entire cart?")) {
         localStorage.removeItem('shoppingCart');
@@ -196,6 +220,8 @@ document.getElementById('clear-cart-btn')?.addEventListener('click', () => {
     }
 });
 
+// Checkout process
+// Manages payment confirmation and cart clearing
 document.getElementById('checkout-btn')?.addEventListener('click', () => {
     const cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
     if(cart.length === 0) return alert("Your cart is empty!");
@@ -207,6 +233,9 @@ document.getElementById('checkout-btn')?.addEventListener('click', () => {
     successModal.show();
 });
 
+// Finish and redirect to product list
+// Clears cart and redirects user to product listing page
+// after order completion
 window.finishAndRedirect = function() {
     localStorage.removeItem('shoppingCart');
     const badge = document.getElementById('cart-count');

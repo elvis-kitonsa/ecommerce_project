@@ -144,27 +144,32 @@ function displayCartPage() {
     let grandTotal = 0;
 
     Object.values(groupedCart).forEach(item => {
-    grandTotal += (item.price * item.qty);
-    
-    pageContainer.innerHTML += `
-        <div class="cart-item d-flex justify-content-between align-items-center mb-3 p-4 bg-white rounded-4 shadow-sm border-0">
-            <div>
-                <h6 class="mb-1 fw-bold text-dark h5">${item.name}</h6>
-                <span class="text-primary fw-bold">$${item.price.toFixed(2)}</span>
-            </div>
-            
-            <div class="qty-control shadow-sm">
-                <button class="qty-btn border-0" onclick="updateQty('${item.name}', -1)">
-                    <i class="fas ${item.qty === 1 ? 'fa-trash-alt text-danger' : 'fa-minus text-dark'} fa-fw"></i>
-                </button>
+        grandTotal += (item.price * item.qty);
+        
+        // These SVG icons draw themselves regardless of internet connection or libraries
+        const minusIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>`;
+        const trashIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
+        const plusIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>`;
 
-                <span class="mx-3 fw-bold h6 mb-0 text-dark">${item.qty}</span>
+        pageContainer.innerHTML += `
+            <div class="cart-item d-flex justify-content-between align-items-center mb-3 p-4 bg-white rounded-4 shadow-sm border-0">
+                <div>
+                    <h6 class="mb-1 fw-bold text-dark h5">${item.name}</h6>
+                    <span class="text-primary fw-bold">$${item.price.toFixed(2)}</span>
+                </div>
+                
+                <div class="qty-control shadow-sm">
+                    <button class="qty-btn border-0" onclick="updateQty('${item.name}', -1)">
+                        ${item.qty === 1 ? trashIcon : minusIcon}
+                    </button>
 
-                <button class="qty-btn border-0" onclick="updateQty('${item.name}', 1)">
-                    <i class="fas fa-plus text-success fa-fw"></i>
-                </button>
-            </div>
-        </div>`;
+                    <span class="mx-3 fw-bold h6 mb-0 text-dark">${item.qty}</span>
+
+                    <button class="qty-btn border-0" onclick="updateQty('${item.name}', 1)">
+                        ${plusIcon}
+                    </button>
+                </div>
+            </div>`;
     });
 
     if(pageTotal) pageTotal.textContent = "$" + grandTotal.toFixed(2);

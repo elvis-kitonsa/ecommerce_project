@@ -8,23 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/all.min.css">
     <style>
-        .qty-control{ 
-            background: #f8f9fa; 
-            border-radius: 50px; 
-            padding: 5px 15px; 
-            display: flex; 
-            align-items: center; 
-        }
-
-        .cart-item{ 
-            transition: transform 0.2s; 
-        }
-
-        .cart-item:hover{
-            transform: scale(1.01); 
-        }
-
-        .qty-control{ 
+        .qty-control { 
             background: #eeeeee; 
             border-radius: 50px; 
             padding: 4px; 
@@ -33,13 +17,16 @@
             border: 1px solid #ddd;
         }
 
-        .qty-btn{
+        .cart-item { transition: transform 0.2s; }
+        .cart-item:hover { transform: scale(1.01); }
+
+        .qty-btn {
             width: 32px;
             height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: white; /* Makes buttons visible against grey background */
+            background: white;
             border-radius: 50%;
             border: none;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -47,23 +34,22 @@
             font-size: 12px;
         }
 
-        .qty-btn:hover{ 
-            background: #f8f9fa; 
-        }
+        .qty-btn:hover { background: #f8f9fa; }
     </style>
 </head>
 <body class="bg-light">
 
 <nav class="navbar navbar-dark bg-dark mb-4 shadow">
-    <div class="container d-flex justify-content-between">
+    <div class="container">
         <span class="navbar-brand mb-0 h1 fw-bold">PREMIUM TECH STORE</span>
     </div>
 </nav>
 
 <div class="container mt-5" style="max-width: 900px;">
     <div class="mb-4">
-        <a href="{% url 'product_list' %}" class="btn btn-outline-dark border-0 fw-bold">
-            <i class="fas fa-chevron-left me-2"></i> Back to Dashboard
+        <a href="{% url 'product_list' %}" class="text-decoration-none text-dark fw-bold d-inline-flex align-items-center" style="opacity: 0.9; font-size: 1.05rem;">
+            <span style="font-size: 1.4rem; margin-right: 8px; line-height: 1; display: inline-block; transform: translateY(-1px);">←</span> 
+            Back to Dashboard
         </a>
     </div>
 
@@ -102,6 +88,39 @@
     </div>
 </div>
 
+<div class="modal fade" id="orderSuccessModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+            <div class="modal-body p-5 text-center">
+                <div class="mb-4">
+                    <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mx-auto" style="width: 70px; height: 70px;">
+                        <span style="font-size: 35px;">✓</span>
+                    </div>
+                </div>
+                <h3 class="fw-bold text-dark mb-2">Order Completed!</h3>
+                <p class="text-muted mb-4">Your order has been processed successfully.</p>
+                
+                <div class="bg-light rounded-3 p-3 mb-4 text-start">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Total Items:</span>
+                        <strong id="modal-item-count" class="text-dark">0</strong>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted">Total Paid:</span>
+                        <strong id="modal-total-amount" class="text-success">$0.00</strong>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-primary w-100 py-3 rounded-pill fw-bold" onclick="finishAndRedirect()">
+                    Return to Store
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
 function displayCartPage() {
     const pageContainer = document.getElementById('cart-page-items');
@@ -110,43 +129,26 @@ function displayCartPage() {
     if (!pageContainer) return;
 
     const cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
-    
+    pageContainer.innerHTML = '';
+
     if (cart.length === 0) {
-        pageContainer.innerHTML += `
-            <div class="cart-item d-flex justify-content-between align-items-center mb-3 p-4 bg-white rounded-4 shadow-sm border-0">
-                <div>
-                    <h6 class="mb-1 fw-bold text-dark h5">${item.name}</h6>
-                    <span class="text-primary fw-bold">$${item.price.toFixed(2)}</span>
-                </div>
-                
-                <div class="qty-control shadow-sm">
-                    <button class="btn qty-btn border-0" onclick="updateQty('${item.name}', -1)">
-                        <i class="fas ${item.qty === 1 ? 'fa-trash-alt text-danger' : 'fa-minus text-dark'}"></i>
-                    </button>
-                    
-                    <span class="mx-3 fw-bold h6 mb-0">${item.qty}</span>
-                    
-                    <button class="btn qty-btn border-0 text-success" onclick="updateQty('${item.name}', 1)">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                </div>
-            </div>`;
+        pageContainer.innerHTML = '<div class="text-center py-5"><p class="text-muted h5">Your cart is empty</p></div>';
+        if(pageTotal) pageTotal.textContent = "$0.00";
+        if(pageCount) pageCount.textContent = "0";
+        return;
     }
 
-    // GLOVO LOGIC: Grouping items to handle quantities
     const groupedCart = cart.reduce((acc, item) => {
         if (!acc[item.name]) acc[item.name] = { ...item, qty: 0 };
         acc[item.name].qty += 1;
         return acc;
     }, {});
 
-    pageContainer.innerHTML = '';
     let grandTotal = 0;
 
     Object.values(groupedCart).forEach(item => {
         grandTotal += (item.price * item.qty);
         
-        // These SVG icons draw themselves regardless of internet connection or libraries
         const minusIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>`;
         const trashIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
         const plusIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>`;
@@ -162,9 +164,7 @@ function displayCartPage() {
                     <button class="qty-btn border-0" onclick="updateQty('${item.name}', -1)">
                         ${item.qty === 1 ? trashIcon : minusIcon}
                     </button>
-
                     <span class="mx-3 fw-bold h6 mb-0 text-dark">${item.qty}</span>
-
                     <button class="qty-btn border-0" onclick="updateQty('${item.name}', 1)">
                         ${plusIcon}
                     </button>
@@ -176,7 +176,6 @@ function displayCartPage() {
     if(pageCount) pageCount.textContent = cart.length;
 }
 
-// Function to handle the + and - logic
 window.updateQty = function(productName, change) {
     let cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
     if (change === 1) {
@@ -190,7 +189,6 @@ window.updateQty = function(productName, change) {
     displayCartPage();
 };
 
-// GLOBAL TRASH: Clear entire cart
 document.getElementById('clear-cart-btn')?.addEventListener('click', () => {
     if(confirm("Are you sure you want to empty your entire cart?")) {
         localStorage.removeItem('shoppingCart');
@@ -198,30 +196,25 @@ document.getElementById('clear-cart-btn')?.addEventListener('click', () => {
     }
 });
 
-// PAYMENT LOGIC: Resets everything to 0
 document.getElementById('checkout-btn')?.addEventListener('click', () => {
     const cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
     if(cart.length === 0) return alert("Your cart is empty!");
     
-    if (confirm("Proceed to Payment? This will clear your cart.")) {
-        // 1. Clear the data
-        localStorage.removeItem('shoppingCart');
-        
-        // 2. Refresh the current page
-        displayCartPage();
-        
-        // 3. Clear the dashboard badge specifically
-        const badge = document.getElementById('cart-count');
-        if(badge) badge.textContent = "0";
+    document.getElementById('modal-item-count').textContent = cart.length;
+    document.getElementById('modal-total-amount').textContent = document.getElementById('cart-page-total').textContent;
 
-        alert("Payment Successful! Your cart and badge have been reset.");
-        window.location.href = "{% url 'product_list' %}"; // Go back to dashboard
-    }
+    const successModal = new bootstrap.Modal(document.getElementById('orderSuccessModal'));
+    successModal.show();
 });
 
-// Start the app
+window.finishAndRedirect = function() {
+    localStorage.removeItem('shoppingCart');
+    const badge = document.getElementById('cart-count');
+    if(badge) badge.textContent = "0";
+    window.location.href = "{% url 'product_list' %}";
+};
+
 displayCartPage();
 </script>
-
 </body>
 </html>

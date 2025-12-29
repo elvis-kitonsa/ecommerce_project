@@ -7,6 +7,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- PayPal SDK for payment processing -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AVd9Vx8wCF8hlLTSZPHYQtKA9-cagGN62jj5QrS35jmwIa-QcicEv1tKDKKt4NfucIjvk5h0coitzjKj&currency=USD"></script>
     <title>Tech Store | Shopping Cart</title>
     <!-- Bootstrap CSS CDN -->
     <link
@@ -213,31 +215,36 @@
                 </label>
 
                 <label
-                  class="list-group-item d-flex align-items-center justify-content-between p-3 border rounded-3 shadow-sm opacity-75"
-                  style="cursor: not-allowed"
+                  class="list-group-item d-flex flex-column p-3 border rounded-3 shadow-sm mb-2"
+                  style="cursor: pointer"
                 >
-                  <div class="d-flex align-items-center">
-                    <!-- PayPal Logo -->
-                    <!-- Using placeholder logo from flaticon.com -->
-                    <img
-                      src="https://cdn-icons-png.flaticon.com/512/174/174861.png"
-                      alt="PayPal"
-                      class="me-3"
-                      style="width: 35px"
-                    />
-                    <div>
-                      <strong class="d-block text-dark">PayPal / Card</strong>
-                      <!-- Indicate unavailability -->
-                      <small class="text-danger">Temporarily Unavailable</small>
+                  <div
+                    class="d-flex align-items-center justify-content-between w-100"
+                  >
+                    <div class="d-flex align-items-center">
+                      <img
+                        src="https://cdn-icons-png.flaticon.com/512/174/174861.png"
+                        alt="PayPal"
+                        class="me-3"
+                        style="width: 35px"
+                      />
+                      <div>
+                        <strong class="d-block text-dark"
+                          >PayPal / Credit Card</strong
+                        >
+                        <small class="text-muted">International Payments</small>
+                      </div>
                     </div>
+                    <input
+                      class="form-check-input me-1"
+                      type="radio"
+                      name="paymentOption"
+                      id="optPayPal"
+                      value="PAYPAL"
+                    />
                   </div>
-                  <input
-                    class="form-check-input me-1"
-                    type="radio"
-                    name="paymentOption"
-                    value="PAYPAL"
-                    disabled
-                  />
+
+                  <div id="paypal-button-container" class="mt-3 d-none"></div>
                 </label>
               </div>
             </div>
@@ -396,8 +403,62 @@
         paymentModal.show();
       });
 
+      // --- NEW: Toggle logic for PayPal vs Mobile Money ---
+      document
+        .querySelectorAll('input[name="paymentOption"]')
+        .forEach((elem) => {
+          elem.addEventListener("change", function (event) {
+            const method = event.target.value;
+            const paypalContainer = document.getElementById(
+              "paypal-button-container"
+            );
+            const confirmBtn = document.getElementById("confirm-payment-btn");
+
+            if (method === "PAYPAL") {
+              paypalContainer.classList.remove("d-none");
+              confirmBtn.classList.add("d-none");
+              renderPayPalButtons();
+            } else {
+              paypalContainer.classList.add("d-none");
+              confirmBtn.classList.remove("d-none");
+            }
+          });
+        });
+
+      // --- NEW: Function to render the PayPal API buttons ---
+      function renderPayPalButtons() {
+        document.getElementById("paypal-button-container").innerHTML = "";
+        const total = document
+          .getElementById("cart-page-total")
+          .textContent.replace("$", "");
+
+        paypal
+          .Buttons({
+            createOrder: function (data, actions) {
+              return actions.order.create({
+                purchase_units: [
+                  {
+                    amount: { value: total },
+                  },
+                ],
+              });
+            },
+            onApprove: function (data, actions) {
+              return actions.order.capture().then(function (details) {
+                alert(
+                  "Transaction completed by " +
+                    details.payer.name.given_name +
+                    "!"
+                );
+                localStorage.removeItem("shoppingCart");
+                window.location.href = "{% url 'product_list' %}";
+              });
+            },
+          })
+          .render("#paypal-button-container");
+      }
+
       // Logic for the Manual Mobile Money Checkout process
-      // Switches from selection list to payment instructions
       document
         .getElementById("confirm-payment-btn")
         ?.addEventListener("click", function () {
@@ -410,29 +471,22 @@
             "#paymentModal .modal-header h5"
           );
 
-          // Check if we are on the first step (Selection)
           if (!selectionList.classList.contains("d-none")) {
             const selected = document.querySelector(
               'input[name="paymentOption"]:checked'
             ).value;
 
             if (selected === "MOBILE_MONEY") {
-              // Hide the selection list and show manual instructions
               selectionList.classList.add("d-none");
               instructions.classList.remove("d-none");
               modalTitle.innerText = "Payment Details";
-
-              // Change button appearance to indicate the final step
               btn.innerText = "I Have Sent the Money";
               btn.classList.replace("btn-primary", "btn-success");
             }
           } else {
-            // Step 2: User confirms they have performed the manual transfer
             alert(
               "Success! We have received your notification. Please wait while we verify your transaction (usually 5-10 mins)."
             );
-
-            // Clear cart and redirect to product list after order completion
             localStorage.removeItem("shoppingCart");
             window.location.href = "{% url 'product_list' %}";
           }

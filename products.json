@@ -1,0 +1,110 @@
+[
+{
+  "model": "shop.product",
+  "pk": 1,
+  "fields": {
+    "name": "Portable / Hand-held Bluetooth Wireless Speaker",
+    "description": "Enjoy your music wirelessly! Explore JBL's selection of waterproof portable Bluetooth speakers with rechargeable batteries.",
+    "price": "125.00",
+    "image_url": "https://images.unsplash.com/photo-1565267316125-13541ed4bc75?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjh8fFBvcnRhYmxlJTIwJTJGJTIwSGFuZC1oZWxkJTIwQmx1ZXRvb3RoJTIwV2lyZWxlc3MlMjBTcGVha2VyfGVufDB8fDB8fHww",
+    "category": "Audio",
+    "created_at": "2025-12-23T17:10:42.210Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 2,
+  "fields": {
+    "name": "Wireless Lavalier Lapel Microphone",
+    "description": "A professional, high-quality wireless microphone system designed for clear audio recording, ideal for content creators, musicians, and public speakers. Its compact, clip-on design offers hands-free convenience, excellent sound quality, and reliable wireless performance without the hassle of cables.",
+    "price": "100.00",
+    "image_url": "https://images.unsplash.com/photo-1563618932-6c2ffb45aadb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzF8fFdpcmVsZXNzJTIwTGF2YWxpZXIlMjBMYXBlbCUyME1pY3JvcGhvbmV8ZW58MHx8MHx8fDA%3D",
+    "category": "Audio",
+    "created_at": "2025-12-23T17:13:46.507Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 3,
+  "fields": {
+    "name": "Advanced Fitness Tracker Smartwatch",
+    "description": "A feature-rich, multi-functional smartwatch with a vibrant AMOLED touchscreen, ideal for health-conscious users and tech enthusiasts. Key features include continuous heart rate monitoring, SpO2 (blood oxygen) tracking, built-in GPS for accurate workout tracking, Bluetooth calling capability, and smart notifications. The durable, water-resistant design and multi-day battery life make it a versatile daily companion.",
+    "price": "250.00",
+    "image_url": "https://images.unsplash.com/photo-1676173646636-f35c9f237853?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTQyfHxBZHZhbmNlZCUyMEZpdG5lc3MlMjBUcmFja2VyJTIwU21hcnR3YXRjaHxlbnwwfHwwfHx8MA%3D%3D",
+    "category": "Smart Home",
+    "created_at": "2025-12-23T17:15:06.588Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 4,
+  "fields": {
+    "name": "SonicPro Wireless Headphones",
+    "description": "Industry-leading noise cancellation with 30-hour battery life and touch controls.",
+    "price": "299.00",
+    "image_url": "https://images.unsplash.com/photo-1640300065113-738f2abb8ba6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDF8fE5vaXNlLUNhbmNlbGluZyUyMEhlYWRwaG9uZXN8ZW58MHx8MHx8fDA%3D",
+    "category": "Audio",
+    "created_at": "2025-12-23T20:33:55.469Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 5,
+  "fields": {
+    "name": "Horizon 34\" Curved Monitor",
+    "description": "144Hz refresh rate with WQHD resolution, perfect for immersive gaming and multitasking.",
+    "price": "450.00",
+    "image_url": "https://images.unsplash.com/photo-1527800792452-506aacb2101f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8VWx0cmEtV2lkZSUyME1vbml0b3J8ZW58MHx8MHx8fDA%3D",
+    "category": "Computing",
+    "created_at": "2025-12-23T20:35:15.506Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 6,
+  "fields": {
+    "name": "ClickMaster RGB Mechanical Keyboard",
+    "description": "Tactile switches with customizable RGB lighting and programmable macro keys.",
+    "price": "120.00",
+    "image_url": "https://images.unsplash.com/photo-1602025882379-e01cf08baa51?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8TWVjaGFuaWNhbCUyMEtleWJvYXJkfGVufDB8fDB8fHww",
+    "category": "Gaming",
+    "created_at": "2025-12-23T20:36:30.046Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 7,
+  "fields": {
+    "name": "Nexus Home Smart Display",
+    "description": "Control your entire home with voice commands and a crisp 10-inch HD touchscreen.",
+    "price": "150.00",
+    "image_url": "https://plus.unsplash.com/premium_photo-1729091330557-891d79192863?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8U21hcnQlMjBIb21lJTIwSHVifGVufDB8fDB8fHww",
+    "category": "Smart Home",
+    "created_at": "2025-12-23T20:39:26.991Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 8,
+  "fields": {
+    "name": "Lumina X5 Mirrorless Camera",
+    "description": "24.2MP full-frame sensor with 4K video recording and advanced autofocus logic.",
+    "price": "899.00",
+    "image_url": "https://images.unsplash.com/photo-1751107996077-aee030806ca5?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8UHJvZmVzc2lvbmFsJTIwRFNMUiUyMENhbWVyYXxlbnwwfHwwfHx8MA%3D%3D",
+    "category": "Photography",
+    "created_at": "2025-12-23T20:40:48.489Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 9,
+  "fields": {
+    "name": "VoltMax 20,000mAh Power Bank",
+    "description": "High-capacity portable charger with USB-C fast charging for all your mobile gadgets.",
+    "price": "55.00",
+    "image_url": "https://images.unsplash.com/photo-1687007081819-984a72322567?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8UG9ydGFibGUlMjBQb3dlciUyMEJhbmt8ZW58MHx8MHx8fDA%3D",
+    "category": "Accessories",
+    "created_at": "2025-12-23T20:41:58.512Z"
+  }
+}
+]

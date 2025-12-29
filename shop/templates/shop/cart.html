@@ -99,34 +99,62 @@
     </div>
 </div>
 
-<!-- Order Success Modal -->
-<!-- Modal displayed upon successful order completion -->
-<!-- Provides the order and  a button to return to the store --> 
-<div class="modal fade" id="orderSuccessModal" tabindex="-1" aria-hidden="true">
+<!-- Order Payment Modal -->
+<!-- Modal displayed upon clicking the 'Complete Payment' button -->
+<!-- Provides the order summary and various forms of payment availed to the buyer --> 
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 rounded-4 shadow-lg">
-            <div class="modal-body p-5 text-center">
-                <div class="mb-4">
-                    <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mx-auto" style="width: 70px; height: 70px;">
-                        <span style="font-size: 35px;">✓</span>
-                    </div>
-                </div>
-                <h3 class="fw-bold text-dark mb-2">Order Completed!</h3>
-                <p class="text-muted mb-4">Your order has been processed successfully.</p>
-                
-                <div class="bg-light rounded-3 p-3 mb-4 text-start">
-                    <div class="d-flex justify-content-between mb-2">
-                        <span class="text-muted">Total Items:</span>
-                        <strong id="modal-item-count" class="text-dark">0</strong>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <span class="text-muted">Total Paid:</span>
-                        <strong id="modal-total-amount" class="text-success">$0.00</strong>
-                    </div>
-                </div>
+            <div class="modal-header border-0 pb-0">
 
-                <button type="button" class="btn btn-primary w-100 py-3 rounded-pill fw-bold" onclick="finishAndRedirect()">
-                    Return to Store
+                <!-- Payment Method Selection -->
+                 <!-- Allows user to select preferred payment method -->
+                <h5 class="fw-bold ps-2">Select Payment Method</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="list-group gap-2">
+                    
+                    <label class="list-group-item d-flex align-items-center justify-content-between p-3 border rounded-3 shadow-sm" style="cursor: pointer;">
+                        <div class="d-flex align-items-center">
+                            <!-- Mobile Money Option with MTN and Airtel Logos -->
+                            <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/mtn-mobile-logo-icon.png" alt="MTN" class="me-3" style="width: 40px; height: 40px; object-fit: contain;">
+                            <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/airtel-logo-icon.png" alt="Airtel" class="me-3" style="width: 40px; height: 40px; object-fit: contain;">
+                            <div>
+                                <strong class="d-block text-dark">Mobile Money</strong>
+                                <small class="text-muted">Pay with MTN or Airtel Uganda</small>
+                            </div>
+                        </div>
+                        <input class="form-check-input me-1" type="radio" name="paymentOption" id="optMM" value="MOBILE_MONEY" checked>
+                    </label>
+
+                    <label class="list-group-item d-flex align-items-center justify-content-between p-3 border rounded-3 shadow-sm" style="cursor: pointer;">
+                        <div class="d-flex align-items-center">
+                            <img src="https://cdn-icons-png.flaticon.com/512/174/174861.png" alt="PayPal" class="me-3" style="width: 40px; height: 40px; object-fit: contain;">
+                            <div>
+                                <strong class="d-block text-dark">PayPal / Credit Card</strong>
+                                <small class="text-muted">International credit & debit cards</small>
+                            </div>
+                        </div>
+                        <input class="form-check-input me-1" type="radio" name="paymentOption" id="optPayPal" value="PAYPAL">
+                    </label>
+
+                    <label class="list-group-item d-flex align-items-center justify-content-between p-3 border rounded-3 shadow-sm" style="cursor: pointer;">
+                        <div class="d-flex align-items-center">
+                            <img src="https://cdn-icons-png.flaticon.com/512/2830/2830284.png" alt="Bank" class="me-3" style="width: 40px; height: 40px; object-fit: contain;">
+                            <div>
+                                <strong class="d-block text-dark">Bank Wire Transfer</strong>
+                                <small class="text-muted">Direct transfer to our local account</small>
+                            </div>
+                        </div>
+                        <input class="form-check-input me-1" type="radio" name="paymentOption" id="optBank" value="BANK_TRANSFER">
+                    </label>
+
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" id="confirm-payment-btn" class="btn btn-primary w-100 py-3 rounded-3 fw-bold shadow-sm">
+                    Confirm & Pay
                 </button>
             </div>
         </div>
@@ -222,15 +250,39 @@ document.getElementById('clear-cart-btn')?.addEventListener('click', () => {
 
 // Checkout process
 // Manages payment confirmation and cart clearing
-document.getElementById('checkout-btn')?.addEventListener('click', () => {
-    const cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
-    if(cart.length === 0) return alert("Your cart is empty!");
-    
-    document.getElementById('modal-item-count').textContent = cart.length;
-    document.getElementById('modal-total-amount').textContent = document.getElementById('cart-page-total').textContent;
+// 1. Find the button and the modal
+const checkoutBtn = document.getElementById('checkout-btn');
+const paymentModalElement = document.getElementById('paymentModal');
 
-    const successModal = new bootstrap.Modal(document.getElementById('orderSuccessModal'));
-    successModal.show();
+// 2. Add the "Click" listener
+checkoutBtn?.addEventListener('click', () => {
+    // Ensure cart is not empty before proceeding
+    // Retrieve cart from LocalStorage
+    // If empty, alert user and do not show modal
+    
+    const cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
+    
+    if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+
+    // This is the magic line that makes the modal pop up
+    const paymentModal = new bootstrap.Modal(paymentModalElement);
+    paymentModal.show();
+});
+
+// 3. Logic for the "Confirm & Pay" button INSIDE the modal
+document.getElementById('confirm-payment-btn')?.addEventListener('click', () => {
+    const selectedMethod = document.querySelector('input[name="paymentOption"]:checked').value;
+    
+    if (selectedMethod === 'MOBILE_MONEY') {
+        alert("Proceeding with MTN/Airtel Mobile Money...");
+    } else if (selectedMethod === 'PAYPAL') {
+        alert("Opening PayPal Checkout...");
+    } else {
+        alert("Bank Transfer details will be sent to your email.");
+    }
 });
 
 // Finish and redirect to product list

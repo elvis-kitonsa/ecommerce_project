@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-# Model representing a product in an online shop
+# Each model representing a product in an online shop
 # Each product has a name, description, price, image URL, category, and creation timestamp
 # Products are ordered by creation date in descending order (newest first)
 # The image_url field includes help text to guide users to provide a professional image link

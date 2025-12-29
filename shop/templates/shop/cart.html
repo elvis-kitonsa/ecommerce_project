@@ -1,311 +1,444 @@
-<!-- This is the shopping cart page for our e-commerce website -->
-<!-- It displays the items in the user's cart and allows checkout. -->
-<!-- It is the 2nd major page of the site after the product listing page. -->
+<!-- shop/templates/shop/cart.html -->
+<!-- Shopping Cart Page Template -->
 
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tech Store | Shopping Cart</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Bootstrap CSS CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome CDN for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/all.min.css"
+    />
+    <!-- Bootstrap Icons CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
     <style>
-        /* Custom styles for the cart page */
-        .qty-control { 
-            background: #eeeeee; 
-            border-radius: 50px; 
-            padding: 4px; 
-            display: flex; 
-            align-items: center;
-            border: 1px solid #ddd;
-        }
+      /* Custom styles for the cart page */
+      .qty-control {
+        background: #eeeeee;
+        border-radius: 50px;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        border: 1px solid #ddd;
+      }
 
-        .cart-item { transition: transform 0.2s; }
-        .cart-item:hover { transform: scale(1.01); }
+      .cart-item {
+        transition: transform 0.2s;
+      }
+      .cart-item:hover {
+        transform: scale(1.01);
+      }
 
-        .qty-btn {
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: white;
-            border-radius: 50%;
-            border: none;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            cursor: pointer;
-            font-size: 12px;
-        }
+      .qty-btn {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: white;
+        border-radius: 50%;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        font-size: 12px;
+      }
 
-        .qty-btn:hover { background: #f8f9fa; }
+      .qty-btn:hover {
+        background: #f8f9fa;
+      }
     </style>
-</head>
-<body class="bg-light">
-
-<nav class="navbar navbar-dark bg-dark mb-4 shadow">
-    <div class="container">
-        <!-- Store Name Display in Navbar -->
+  </head>
+  <body class="bg-light">
+    <nav class="navbar navbar-dark bg-dark mb-4 shadow">
+      <div class="container">
         <span class="navbar-brand mb-0 h1 fw-bold">KITONSA'S TECH STORE</span>
-    </div>
-</nav>
+      </div>
+    </nav>
 
-<div class="container mt-5" style="max-width: 900px;">
-    <div class="mb-4">
+    <div class="container mt-5" style="max-width: 900px">
+      <div class="mb-4">
         <!-- Back to Dashboard Link -->
-        <a href="{% url 'product_list' %}" class="text-decoration-none text-dark fw-bold d-inline-flex align-items-center" style="opacity: 0.9; font-size: 1.05rem;">
-            <span style="font-size: 1.4rem; margin-right: 8px; line-height: 1; display: inline-block; transform: translateY(-1px);">←</span> 
-            Back to Dashboard
+        <a
+          href="{% url 'product_list' %}"
+          class="text-decoration-none text-dark fw-bold d-inline-flex align-items-center"
+          style="opacity: 0.9; font-size: 1.05rem"
+        >
+          <span
+            style="
+              font-size: 1.4rem;
+              margin-right: 8px;
+              line-height: 1;
+              display: inline-block;
+              transform: translateY(-1px);
+            "
+            >←</span
+          >
+          Back to Dashboard
         </a>
-    </div>
+      </div>
 
-    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
-        <!-- Cart Title and Clear Cart Button -->
-        <h2 class="mb-0 fw-bold"><i class="fas fa-shopping-basket text-primary me-2"></i> Your Cart</h2>
-        <button id="clear-cart-btn" class="btn btn-outline-danger btn-sm border-0" title="Empty Cart">
-            <i class="fas fa-trash-alt fa-lg"></i>
+      <!-- Cart Header with Title and Clear Cart Button -->
+      <div
+        class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3"
+      >
+        <h2 class="mb-0 fw-bold">
+          <i class="fas fa-shopping-basket text-primary me-2"></i> Your Cart
+        </h2>
+        <button
+          id="clear-cart-btn"
+          class="btn btn-outline-danger btn-sm border-0"
+          title="Empty Cart"
+        >
+          <i class="fas fa-trash-alt fa-lg"></i>
         </button>
-    </div>
+      </div>
 
-    <div class="row g-4 align-items-start">
+      <div class="row g-4 align-items-start">
         <div class="col-lg-7">
-            <div id="cart-page-items">
-                <!-- Cart items will be dynamically inserted here by JavaScript -->
-                <p class="text-muted">Loading your items...</p>
-            </div>
+          <div id="cart-page-items">
+            <!-- Cart items will be dynamically inserted here -->
+            <p class="text-muted">Loading your items...</p>
+          </div>
         </div>
 
-        <!-- Order Summary Section -->
-         <!-- Displays total items and total price with checkout button -->
         <div class="col-lg-8 col-xl-5">
-            <div class="card shadow border-0 rounded-4 sticky-top" style="top: 2rem;">
-                <div class="card-body p-4">
-                    <h5 class="card-title fw-bold mb-4">Order Summary</h5>
-            
-                    <div class="d-flex justify-content-between mb-3">
-                        <span class="text-muted">Total Items:</span>
-                        <span id="cart-page-count" class="fw-bold text-primary fs-5">0</span>
-                    </div>
-            
-                    <hr class="text-muted opacity-25">
+          <div
+            class="card shadow border-0 rounded-4 sticky-top"
+            style="top: 2rem"
+          >
+            <!-- Order Summary Section -->
+            <!-- Displays total items and total price with checkout button -->
 
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <span class="h5 fw-bold mb-0">Total to Pay:</span>
-                        <span id="cart-page-total" class="h4 fw-bold text-success mb-0">$0.00</span>
-                    </div>
+            <div class="card-body p-4">
+              <h5 class="card-title fw-bold mb-4">Order Summary</h5>
 
-                    <button id="checkout-btn" class="btn btn-primary w-100 py-3 rounded-pill fw-bold shadow-sm transition-all">
-                        Complete Payment
-                    </button>
-            
-                    <p class="text-center text-muted small mt-3 mb-0">
-                        <i class="fas fa-lock me-1"></i> Secure Checkout
-                    </p>
-                </div>
+              <div class="d-flex justify-content-between mb-3">
+                <span class="text-muted">Total Items:</span>
+                <span id="cart-page-count" class="fw-bold text-primary fs-5"
+                  >0</span
+                >
+              </div>
+
+              <hr class="text-muted opacity-25" />
+
+              <div
+                class="d-flex justify-content-between align-items-center mb-4"
+              >
+                <span class="h5 fw-bold mb-0">Total to Pay:</span>
+                <span id="cart-page-total" class="h4 fw-bold text-success mb-0"
+                  >$0.00</span
+                >
+              </div>
+
+              <button
+                id="checkout-btn"
+                class="btn btn-primary w-100 py-3 rounded-pill fw-bold shadow-sm transition-all"
+              >
+                Complete Payment
+              </button>
+
+              <p class="text-center text-muted small mt-3 mb-0">
+                <i class="fas fa-lock me-1"></i> Secure Checkout
+              </p>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
 
-<!-- Order Payment Modal -->
-<!-- Modal displayed upon clicking the 'Complete Payment' button -->
-<!-- Provides the order summary and various forms of payment availed to the buyer --> 
-<div class="modal fade" id="paymentModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <!-- Payment Modal for Checkout Process -->
+    <!-- Handles payment method selection and instructions -->
+
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 rounded-4 shadow-lg">
-            <div class="modal-header border-0 pb-0">
+          <div class="modal-header border-0 pb-0">
+            <h5 class="fw-bold ps-2">Select Payment Method</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body p-4">
+            <div id="payment-selection-list">
+              <div class="list-group gap-2">
+                <label
+                  class="list-group-item d-flex align-items-center justify-content-between p-3 border rounded-3 shadow-sm"
+                  style="cursor: pointer"
+                >
+                  <!-- Mobile Money Option -->
+                  <div class="d-flex align-items-center">
+                    <!-- MTN and Airtel Logos -->
+                    <!-- Using placeholder logos from uxwing.com -->
+                    <img
+                      src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/mtn-mobile-logo-icon.png"
+                      alt="MTN"
+                      class="me-2"
+                      style="width: 35px"
+                    />
+                    <img
+                      src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/airtel-logo-icon.png"
+                      alt="Airtel"
+                      class="me-2"
+                      style="width: 35px"
+                    />
+                    <div>
+                      <strong class="d-block text-dark">Mobile Money</strong>
+                      <small class="text-muted">MTN or Airtel Uganda</small>
+                    </div>
+                  </div>
 
-                <!-- Payment Method Selection -->
-                 <!-- Allows user to select preferred payment method -->
-                <h5 class="fw-bold ps-2">Select Payment Method</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  <input
+                    class="form-check-input me-1"
+                    type="radio"
+                    name="paymentOption"
+                    id="optMM"
+                    value="MOBILE_MONEY"
+                    checked
+                  />
+                </label>
+
+                <label
+                  class="list-group-item d-flex align-items-center justify-content-between p-3 border rounded-3 shadow-sm opacity-75"
+                  style="cursor: not-allowed"
+                >
+                  <div class="d-flex align-items-center">
+                    <!-- PayPal Logo -->
+                    <!-- Using placeholder logo from flaticon.com -->
+                    <img
+                      src="https://cdn-icons-png.flaticon.com/512/174/174861.png"
+                      alt="PayPal"
+                      class="me-3"
+                      style="width: 35px"
+                    />
+                    <div>
+                      <strong class="d-block text-dark">PayPal / Card</strong>
+                      <!-- Indicate unavailability -->
+                      <small class="text-danger">Temporarily Unavailable</small>
+                    </div>
+                  </div>
+                  <input
+                    class="form-check-input me-1"
+                    type="radio"
+                    name="paymentOption"
+                    value="PAYPAL"
+                    disabled
+                  />
+                </label>
+              </div>
             </div>
-            <div class="modal-body p-4">
-                <div class="list-group gap-2">
-                    
-                    <label class="list-group-item d-flex align-items-center justify-content-between p-3 border rounded-3 shadow-sm" style="cursor: pointer;">
-                        <div class="d-flex align-items-center">
-                            <!-- Mobile Money Option with MTN and Airtel Logos -->
-                            <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/mtn-mobile-logo-icon.png" alt="MTN" class="me-3" style="width: 40px; height: 40px; object-fit: contain;">
-                            <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/airtel-logo-icon.png" alt="Airtel" class="me-3" style="width: 40px; height: 40px; object-fit: contain;">
-                            <div>
-                                <strong class="d-block text-dark">Mobile Money</strong>
-                                <small class="text-muted">Pay with MTN or Airtel Uganda</small>
-                            </div>
-                        </div>
-                        <input class="form-check-input me-1" type="radio" name="paymentOption" id="optMM" value="MOBILE_MONEY" checked>
-                    </label>
 
-                    <label class="list-group-item d-flex align-items-center justify-content-between p-3 border rounded-3 shadow-sm" style="cursor: pointer;">
-                        <div class="d-flex align-items-center">
-                            <img src="https://cdn-icons-png.flaticon.com/512/174/174861.png" alt="PayPal" class="me-3" style="width: 40px; height: 40px; object-fit: contain;">
-                            <div>
-                                <strong class="d-block text-dark">PayPal / Credit Card</strong>
-                                <small class="text-muted">International credit & debit cards</small>
-                            </div>
-                        </div>
-                        <input class="form-check-input me-1" type="radio" name="paymentOption" id="optPayPal" value="PAYPAL">
-                    </label>
+            <!-- Manual Mobile Money Payment Instructions -->
+            <!-- Initially hidden, shown after selection -->
+            <div id="manual-instructions" class="d-none text-center py-2">
+              <div class="mb-3">
+                <i class="fas fa-mobile-alt fa-3x text-primary mb-3"></i>
+                <h5 class="fw-bold">Send Mobile Money</h5>
+                <p class="text-muted small">
+                  Please send the total amount to the number below:
+                </p>
+              </div>
 
-                    <label class="list-group-item d-flex align-items-center justify-content-between p-3 border rounded-3 shadow-sm" style="cursor: pointer;">
-                        <div class="d-flex align-items-center">
-                            <img src="https://cdn-icons-png.flaticon.com/512/2830/2830284.png" alt="Bank" class="me-3" style="width: 40px; height: 40px; object-fit: contain;">
-                            <div>
-                                <strong class="d-block text-dark">Bank Wire Transfer</strong>
-                                <small class="text-muted">Direct transfer to our local account</small>
-                            </div>
-                        </div>
-                        <input class="form-check-input me-1" type="radio" name="paymentOption" id="optBank" value="BANK_TRANSFER">
-                    </label>
+              <div class="bg-light p-3 rounded-4 mb-3 border">
+                <p class="mb-1 fw-bold text-dark fs-5">
+                  0773778438 / 0708033107
+                </p>
+                <p class="mb-0 text-primary fw-bold">Name: ELVIS KITONSA</p>
+              </div>
 
-                </div>
+              <!-- Note about using name as reference -->
+              <!-- Emphasizes importance of correct reference during payment -->
+              <div class="alert alert-warning py-2 small mb-0">
+                <strong>Note:</strong> Use your name as the reference. Click the
+                button below once you have sent the money.
+              </div>
             </div>
-            <div class="modal-footer border-0">
-                <button type="button" id="confirm-payment-btn" class="btn btn-primary w-100 py-3 rounded-3 fw-bold shadow-sm">
-                    Confirm & Pay
-                </button>
-            </div>
+          </div>
+          <div class="modal-footer border-0">
+            <button
+              type="button"
+              id="confirm-payment-btn"
+              class="btn btn-primary w-100 py-3 rounded-3 fw-bold shadow-sm"
+            >
+              Confirm & Pay
+            </button>
+          </div>
         </div>
+      </div>
     </div>
-</div>
 
-<!-- Bootstrap JS and dependencies -->
-<!-- JavaScript to handle cart display and checkout logic -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Cart Functionality Script -->
- <!-- Manages cart display, quantity updates, clearing cart, and checkout process -->
-<script>
-function displayCartPage() { // Displays cart items on the cart page
-    const pageContainer = document.getElementById('cart-page-items'); // Container for cart items
-    const pageTotal = document.getElementById('cart-page-total'); // Element to display total price
-    const pageCount = document.getElementById('cart-page-count'); // Element to display item count
-    if (!pageContainer) return; // Exit if not on cart page
+    <script>
+      function displayCartPage() {
+        // Displays cart items on the cart page
+        const pageContainer = document.getElementById("cart-page-items"); // Container for cart items
+        const pageTotal = document.getElementById("cart-page-total"); // Element to display total price
+        const pageCount = document.getElementById("cart-page-count"); // Element to display item count
+        if (!pageContainer) return; // Exit if container not found
 
-    const cart = JSON.parse(localStorage.getItem('shoppingCart')) || []; // Retrieve cart from LocalStorage
-    pageContainer.innerHTML = ''; // Clear existing content
+        const cart = JSON.parse(localStorage.getItem("shoppingCart")) || []; // Retrieve cart from LocalStorage
+        pageContainer.innerHTML = ""; // Clear existing content
 
-    if (cart.length === 0) { // If cart is empty
-        pageContainer.innerHTML = '<div class="text-center py-5"><p class="text-muted h5">Your cart is empty</p></div>';
-        if(pageTotal) pageTotal.textContent = "$0.00"; // Set total to $0.00
-        if(pageCount) pageCount.textContent = "0"; // Set item count to 0
-        return;
-    }
+        if (cart.length === 0) {
+          // If cart is empty
+          pageContainer.innerHTML =
+            '<div class="text-center py-5"><p class="text-muted h5">Your cart is empty</p></div>';
+          if (pageTotal) pageTotal.textContent = "$0.00"; // Set total to $0.00
+          if (pageCount) pageCount.textContent = "0"; // Set item count to 0
+          return;
+        }
 
-    const groupedCart = cart.reduce((acc, item) => { // Group items by name and count quantities
-        if (!acc[item.name]) acc[item.name] = { ...item, qty: 0 }; // Initialize item entry
-        acc[item.name].qty += 1; // Increment quantity
-        return acc;
-    }, {});
+        const groupedCart = cart.reduce((acc, item) => {
+          // Group items by name and count quantities
+          if (!acc[item.name]) acc[item.name] = { ...item, qty: 0 }; // Initialize item entry
+          acc[item.name].qty += 1; // Increment quantity
+          return acc;
+        }, {});
 
-    let grandTotal = 0;
+        let grandTotal = 0;
 
-    Object.values(groupedCart).forEach(item => { // Display each unique item with quantity controls
-        grandTotal += (item.price * item.qty); // Calculate total price
-        
-        /* Quantity Control Buttons */
-        const minusIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>`;
-        const trashIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
-        const plusIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>`;
+        Object.values(groupedCart).forEach((item) => {
+          // Display each unique item with quantity controls
+          grandTotal += item.price * item.qty; // Calculate total price
 
-        // Append item HTML to the cart page container
-        pageContainer.innerHTML += `
+          /* Quantity Control Buttons */
+          // SVG icons for minus, trash, and plus buttons
+          const minusIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>`;
+          const trashIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
+          const plusIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>`;
+
+          // Append item HTML to the cart page container
+          pageContainer.innerHTML += `
             <div class="cart-item d-flex justify-content-between align-items-center mb-3 p-4 bg-white rounded-4 shadow-sm border-0">
                 <div>
                     <h6 class="mb-1 fw-bold text-dark h5">${item.name}</h6>
-                    <span class="text-primary fw-bold">$${item.price.toFixed(2)}</span>
+                    <span class="text-primary fw-bold">$${item.price.toFixed(
+                      2
+                    )}</span>
                 </div>
                 
                 <div class="qty-control shadow-sm">
-                    <button class="qty-btn border-0" onclick="updateQty('${item.name}', -1)">
+                    <button class="qty-btn border-0" onclick="updateQty('${
+                      item.name
+                    }', -1)">
                         ${item.qty === 1 ? trashIcon : minusIcon}
                     </button>
-                    <span class="mx-3 fw-bold h6 mb-0 text-dark">${item.qty}</span>
-                    <button class="qty-btn border-0" onclick="updateQty('${item.name}', 1)">
+                    <span class="mx-3 fw-bold h6 mb-0 text-dark">${
+                      item.qty
+                    }</span>
+                    <button class="qty-btn border-0" onclick="updateQty('${
+                      item.name
+                    }', 1)">
                         ${plusIcon}
                     </button>
                 </div>
             </div>`;
-    });
+        });
 
-    // Update total price and item count on the page
-    if(pageTotal) pageTotal.textContent = "$" + grandTotal.toFixed(2);
-    if(pageCount) pageCount.textContent = cart.length;
-}
+        // Update total price and item count on the page
+        if (pageTotal) pageTotal.textContent = "$" + grandTotal.toFixed(2);
+        if (pageCount) pageCount.textContent = cart.length;
+      }
 
-// Update item quantity in cart
-window.updateQty = function(productName, change) { // change: +1 to add, -1 to remove
-    let cart = JSON.parse(localStorage.getItem('shoppingCart')) || []; // Retrieve cart from LocalStorage
-    if (change === 1) {
-        const product = cart.find(i => i.name === productName); // Find product to add
-        cart.push({...product});
-    } else {
-        const index = cart.findLastIndex(i => i.name === productName);
-        if (index > -1) cart.splice(index, 1);
-    }
-    localStorage.setItem('shoppingCart', JSON.stringify(cart)); // Save updated cart
-    displayCartPage(); // Refresh cart display
-};
+      // Update item quantity in cart
+      window.updateQty = function (productName, change) {
+        // change: +1 to add, -1 to remove
+        let cart = JSON.parse(localStorage.getItem("shoppingCart")) || []; // Retrieve cart from LocalStorage
+        if (change === 1) {
+          const product = cart.find((i) => i.name === productName); // Find product to add
+          cart.push({ ...product });
+        } else {
+          const index = cart.findLastIndex((i) => i.name === productName);
+          if (index > -1) cart.splice(index, 1);
+        }
+        localStorage.setItem("shoppingCart", JSON.stringify(cart)); // Save updated cart
+        displayCartPage(); // Refresh cart display
+      };
 
-// Clear entire cart
-// Handles clearing the cart when "Empty Cart" button is clicked
-document.getElementById('clear-cart-btn')?.addEventListener('click', () => {
-    if(confirm("Are you sure you want to empty your entire cart?")) {
-        localStorage.removeItem('shoppingCart');
-        displayCartPage();
-    }
-});
+      // Clear entire cart
+      // Handles clearing the cart when "Empty Cart" button is clicked
+      document
+        .getElementById("clear-cart-btn")
+        ?.addEventListener("click", () => {
+          if (confirm("Are you sure you want to empty your entire cart?")) {
+            localStorage.removeItem("shoppingCart");
+            displayCartPage();
+          }
+        });
 
-// Checkout process
-// Manages payment confirmation and cart clearing
-// 1. Find the button and the modal
-const checkoutBtn = document.getElementById('checkout-btn');
-const paymentModalElement = document.getElementById('paymentModal');
+      // Checkout process
+      // Manages payment confirmation and modal display
+      const checkoutBtn = document.getElementById("checkout-btn");
+      const paymentModalElement = document.getElementById("paymentModal");
 
-// 2. Add the "Click" listener
-checkoutBtn?.addEventListener('click', () => {
-    // Ensure cart is not empty before proceeding
-    // Retrieve cart from LocalStorage
-    // If empty, alert user and do not show modal
+      checkoutBtn?.addEventListener("click", () => {
+        const cart = JSON.parse(localStorage.getItem("shoppingCart")) || [];
+        if (cart.length === 0) {
+          alert("Your cart is empty!");
+          return;
+        }
+        const paymentModal = new bootstrap.Modal(paymentModalElement);
+        paymentModal.show();
+      });
 
-    const cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
-    
-    if (cart.length === 0) {
-        alert("Your cart is empty!");
-        return;
-    }
+      // Logic for the Manual Mobile Money Checkout process
+      // Switches from selection list to payment instructions
+      document
+        .getElementById("confirm-payment-btn")
+        ?.addEventListener("click", function () {
+          const btn = this;
+          const selectionList = document.getElementById(
+            "payment-selection-list"
+          );
+          const instructions = document.getElementById("manual-instructions");
+          const modalTitle = document.querySelector(
+            "#paymentModal .modal-header h5"
+          );
 
-    // This is the magic line that makes the modal pop up
-    const paymentModal = new bootstrap.Modal(paymentModalElement);
-    paymentModal.show();
-});
+          // Check if we are on the first step (Selection)
+          if (!selectionList.classList.contains("d-none")) {
+            const selected = document.querySelector(
+              'input[name="paymentOption"]:checked'
+            ).value;
 
-// 3. Logic for the "Confirm & Pay" button INSIDE the modal
-document.getElementById('confirm-payment-btn')?.addEventListener('click', () => {
-    const selectedMethod = document.querySelector('input[name="paymentOption"]:checked').value;
-    
-    if (selectedMethod === 'MOBILE_MONEY') {
-        alert("Proceeding with MTN/Airtel Mobile Money...");
-    } else if (selectedMethod === 'PAYPAL') {
-        alert("Opening PayPal Checkout...");
-    } else {
-        alert("Bank Transfer details will be sent to your email.");
-    }
-});
+            if (selected === "MOBILE_MONEY") {
+              // Hide the selection list and show manual instructions
+              selectionList.classList.add("d-none");
+              instructions.classList.remove("d-none");
+              modalTitle.innerText = "Payment Details";
 
-// Finish and redirect to product list
-// Clears cart and redirects user to product listing page
-// after order completion
-window.finishAndRedirect = function() {
-    localStorage.removeItem('shoppingCart');
-    const badge = document.getElementById('cart-count');
-    if(badge) badge.textContent = "0";
-    window.location.href = "{% url 'product_list' %}";
-};
+              // Change button appearance to indicate the final step
+              btn.innerText = "I Have Sent the Money";
+              btn.classList.replace("btn-primary", "btn-success");
+            }
+          } else {
+            // Step 2: User confirms they have performed the manual transfer
+            alert(
+              "Success! We have received your notification. Please wait while we verify your transaction (usually 5-10 mins)."
+            );
 
-displayCartPage();
-</script>
-</body>
+            // Clear cart and redirect to product list after order completion
+            localStorage.removeItem("shoppingCart");
+            window.location.href = "{% url 'product_list' %}";
+          }
+        });
+
+      displayCartPage();
+    </script>
+  </body>
 </html>

@@ -8,9 +8,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart</title>
+    <title>Tech Store | Shopping Cart</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         /* Custom styles for the cart page */
         .qty-control { 
@@ -69,30 +70,39 @@
     </div>
 
     <div class="row g-4 align-items-start">
-        <div class="col-lg-8">
+        <div class="col-lg-7">
             <div id="cart-page-items">
                 <!-- Cart items will be dynamically inserted here by JavaScript -->
                 <p class="text-muted">Loading your items...</p>
             </div>
         </div>
 
-        <div class="col-lg-4">
-            <div class="card shadow border-0 rounded-4">
+        <!-- Order Summary Section -->
+         <!-- Displays total items and total price with checkout button -->
+        <div class="col-lg-8 col-xl-5">
+            <div class="card shadow border-0 rounded-4 sticky-top" style="top: 2rem;">
                 <div class="card-body p-4">
-                    <!-- Order Summary Section -->
-                     <!-- Displays total items and total price, with a checkout button -->
                     <h5 class="card-title fw-bold mb-4">Order Summary</h5>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Total Items:</span>
-                        <span id="cart-page-count" class="fw-bold text-primary">0</span>
+            
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-muted">Total Items:</span>
+                        <span id="cart-page-count" class="fw-bold text-primary fs-5">0</span>
                     </div>
-                    <div class="d-flex justify-content-between mb-4">
-                        <span class="h5 fw-bold">Total to Pay:</span>
-                        <span id="cart-page-total" class="h5 fw-bold text-success">$0.00</span>
+            
+                    <hr class="text-muted opacity-25">
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <span class="h5 fw-bold mb-0">Total to Pay:</span>
+                        <span id="cart-page-total" class="h4 fw-bold text-success mb-0">$0.00</span>
                     </div>
-                    <button id="checkout-btn" class="btn btn-primary w-100 py-3 rounded-pill fw-bold shadow">
+
+                    <button id="checkout-btn" class="btn btn-primary w-100 py-3 rounded-pill fw-bold shadow-sm transition-all">
                         Complete Payment
                     </button>
+            
+                    <p class="text-center text-muted small mt-3 mb-0">
+                        <i class="fas fa-lock me-1"></i> Secure Checkout
+                    </p>
                 </div>
             </div>
         </div>
@@ -259,7 +269,7 @@ checkoutBtn?.addEventListener('click', () => {
     // Ensure cart is not empty before proceeding
     // Retrieve cart from LocalStorage
     // If empty, alert user and do not show modal
-    
+
     const cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
     
     if (cart.length === 0) {

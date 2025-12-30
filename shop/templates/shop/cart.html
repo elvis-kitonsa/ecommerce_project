@@ -445,13 +445,16 @@
             },
             onApprove: function (data, actions) {
               return actions.order.capture().then(function (details) {
+                /*
                 alert(
                   "Transaction completed by " +
                     details.payer.name.given_name +
                     "!"
                 );
+                */
+                //We removed the alert to improve user experience - load success page directly
                 localStorage.removeItem("shoppingCart");
-                window.location.href = "{% url 'product_list' %}";
+                window.location.href = "{% url 'payment_success' %}";
               });
             },
           })
@@ -477,6 +480,7 @@
             ).value;
 
             if (selected === "MOBILE_MONEY") {
+              // Show manual payment instructions
               selectionList.classList.add("d-none");
               instructions.classList.remove("d-none");
               modalTitle.innerText = "Payment Details";
@@ -484,11 +488,14 @@
               btn.classList.replace("btn-primary", "btn-success");
             }
           } else {
+            /*
             alert(
               "Success! We have received your notification. Please wait while we verify your transaction (usually 5-10 mins)."
             );
+            */
+            //We removed the alert to improve user experience - load success page directly
             localStorage.removeItem("shoppingCart");
-            window.location.href = "{% url 'product_list' %}";
+            window.location.href = "{% url 'payment_success' %}";
           }
         });
 

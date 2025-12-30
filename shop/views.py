@@ -27,3 +27,8 @@ def product_list(request):
 # Displays the dynamic shopping cart populated by LocalStorage.
 def cart_view(request):
     return render(request, 'shop/cart.html')
+
+# View for the payment success page.
+# Displays a thank you message after successful checkout.
+def payment_success(request):
+    return render(request, 'shop/success.html')

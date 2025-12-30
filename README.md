@@ -1,4 +1,5 @@
 # 💡 Project Concept
+
 **KITONSA'S TECH STORE**
 
 # 📝 Project Description
@@ -40,34 +41,49 @@ This project was built using an AI-augmented workflow. I **utilized Google Gemin
     4. Database Connector: PyMySQL
 
 # 📂 Project Structure
+
 Here is the updated project structure
+
 ```
 ecommerce_project/
-├── core/                  # Project-wide settings and routing
-├── shop/                  # Main store application logic
-│   ├── static/shop/       # Frontend assets
-│   │   ├── css/style.css  # Custom styling
-│   │   └── js/search.js   # The 'Engine' (Search & Cart Logic)
-│   ├── templates/shop/    # HTML pages
-│   │   ├── product_list.html # Dashboard/Storefront
-│   │   └── cart.html      # Dynamic Shopping Cart & Checkout
-│   ├── models.py          # Product Database Schema
-│   └── views.py           # Controllers for Store & Cart
-├── media/                 # Uploaded product images
-└── manage.py              # Django command-line utility
+├── core/                       # Project configuration
+│   ├── settings.py
+│   ├── urls.py                 # Main URL routing (includes shop.urls)
+│   └── wsgi.py
+├── shop/                       # Main application logic
+│   ├── migrations/             # Database migration history
+│   ├── static/
+│   │   └── shop/
+│   │       ├── css/            # Custom styles
+│   │       └── js/             # External scripts (if any)
+│   ├── templates/
+│   │   └── shop/
+│   │       ├── product_list.html  # Homepage / Catalog
+│   │       ├── cart.html          # Shopping cart & Payment Logic (PayPal/Momo)
+│   │       └── success.html       # Thank You / Order Confirmation page
+│   ├── admin.py                # Admin panel configuration
+│   ├── models.py               # Product & Order database models
+│   ├── urls.py                 # App-specific routing
+│   └── views.py                # Logic for cart, products, and success page
+├── manage.py
+└── db.sqlite3                  # Local development database
 ```
 
 # ⚙️ Installation & Setup
 
 Clone the Repository:
+
 ```
 git clone https://github.com/elvis-kitonsa/ecommerce_project.git
 cd ecommerce_project
 ```
+
 Environment Setup:
+
 ```
 pip install -r requirements.txt
 ```
+
 Database Configuration:
 
     Ensure XAMPP (MySQL/MariaDB) is running and create a database named tech_store_db.
@@ -79,6 +95,7 @@ Initialize & Run:
     python manage.py runserver
 
 # 📸 Preview
+
 This is how the Tech shop's dashboard looks like:
 
 ![Tech Store Preview](media/preview.png)

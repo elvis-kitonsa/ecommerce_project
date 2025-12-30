@@ -30,6 +30,12 @@ This project was built using an AI-augmented workflow. I **utilized Google Gemin
 
     6. Polished UI: Custom hover effects, uniform image scaling, and a floating cart indicator with real-time badges.
 
+    7. Dual Payment Gateway: Integrated PayPal SDK for international credit card payments and a manual Mobile Money flow for local (Uganda) transactions.
+
+    8. Dynamic Cart Management: Vanilla JavaScript implementation for adding/removing items using localStorage.
+
+    9. Order Confirmation: Dedicated success page to improve User Experience (UX) and provide transaction verification timelines.
+
 # 🛠️ Tech Stack
 
     1. Backend: Python / Django 4.2
